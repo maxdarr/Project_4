@@ -9,7 +9,7 @@ class Paddle(pygame.sprite.Sprite):
         self.ai = ai
         self.image =  pygame.Surface((10, 70))
         self.rect = self.image.get_rect()
-        self.rect.topright = (xpos, 240)
+        self.rect.topright = (xpos, 215)
         self.image.fill(pygame.Color("white"))
 
     def update(self):
@@ -24,7 +24,7 @@ class Paddle(pygame.sprite.Sprite):
                 dy = -1*ai_speed - random.random()*ai_speed
             else:
                 dy = 0
-            print dy
+            print(dy)
             self.rect.center = (self.xpos-5, self.rect.center[1]+dy)
 
 class Ball(pygame.sprite.Sprite):
