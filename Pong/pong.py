@@ -28,6 +28,7 @@ class MenuItem(pygame.font.Font):
         self.label = self.render(self.text, 1, self.font_color)
  
     def is_mouse_selection(self, posx, posy):
+        #pos = pygame.mouse.get_pos()
         if (posx >= self.pos_x and posx <= self.pos_x + self.width) and \
             (posy >= self.pos_y and posy <= self.pos_y + self.height):
                 return True
@@ -40,6 +41,7 @@ class GameMenu():
         self.screen = screen
         self.scr_width = self.screen.get_rect().width
         self.scr_height = self.screen.get_rect().height
+
  
         self.bg_color = bg_color
         self.clock = pygame.time.Clock()
@@ -72,7 +74,9 @@ class GameMenu():
             self.screen.fill(self.bg_color)
  
             for item in self.items:
-                if item.is_mouse_selection(pygame.mouse.get_pos()):
+                pos = pygame.mouse.get_pos()
+
+                if item.is_mouse_selection(posx=pos[0],posy=pos[1]):
                     item.set_font_color((255, 0, 0))
                     item.set_italic(True)
                 else:
