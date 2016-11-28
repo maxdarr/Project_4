@@ -41,7 +41,7 @@ class GameMenu():
         self.screen = screen
         self.scr_width = self.screen.get_rect().width
         self.scr_height = self.screen.get_rect().height
-
+        self.funcs = funcs
  
         self.bg_color = bg_color
         self.clock = pygame.time.Clock()
@@ -53,8 +53,6 @@ class GameMenu():
             # t_h: total height of text block
             t_h = len(items) * menu_item.height
             pos_x = (self.scr_width / 2) - (menu_item.width / 2)
-            # This line includes a bug fix by Ariel (Thanks!)
-            # Please check the comments section for an explanation
             pos_y = (self.scr_height / 2) - (t_h / 2) + ((index * 2) + index * menu_item.height)
  
             menu_item.set_position(pos_x, pos_y)
@@ -65,11 +63,14 @@ class GameMenu():
         while mainloop:
             # Limit frame speed to 50 FPS
             self.clock.tick(50)
- 
+            mpos = pygame.mouse.get_pos()
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     mainloop = False
- 
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    for item in self.items:
+                        if item.is_mouse_selection(posx=mpos[0],posy=mpos[1]):
+                            self.funcs[item.text]()
             # Redraw the background
             self.screen.fill(self.bg_color)
  
@@ -91,8 +92,12 @@ if __name__ == "__main__":
     # Creating the screen
     screen = pygame.display.set_mode((640, 480), 0, 32)
  
-    menu_items = ('Start', 'Quit')
- 
+    menu_items = ('EASY', 'HARD')
+    def hard():
+        print("HARD")
+    def easy():
+        print("EASY")
+    funcs = {'EASY': easy, 'HARD': hard}
     pygame.display.set_caption('Game Menu')
     gm = GameMenu(screen, menu_items)
     gm.run()
@@ -209,8 +214,8 @@ def new_round():
 
 pygame.init()
 
-ball_speed = 5
-ai_speed = 4
+ball_speed = 5 #5
+ai_speed = 4 #4
 player = Paddle(10)
 computer = Paddle(630, True)
 ball = Ball([player, computer])
