@@ -104,11 +104,11 @@ if __name__ == "__main__":
 
 class Paddle(pygame.sprite.Sprite):
     def __init__(self, xpos, ai=False):
-        pygame.sprite.Sprite.__init__(self)
-        self.xpos = xpos
+        pygame.sprite.Sprite.__init__(self) #calling the base class for visible game objects
+        self.xpos = xpos #sets the paddles position on the x axis
         self.ai = ai
-        self.image =  pygame.Surface((10, 70))
-        self.rect = self.image.get_rect()
+        self.image =  pygame.Surface((10, 70)) #creates the paddle image
+        self.rect = self.image.get_rect() #turns the image into a pygame rect object
         self.rect.topright = (xpos, 215)
         self.image.fill(pygame.Color("white"))
 
@@ -215,7 +215,7 @@ def new_round():
 pygame.init()
 
 ball_speed = 5 #5
-ai_speed = 4 #4
+ai_speed = 5 #4
 player = Paddle(10)
 computer = Paddle(630, True)
 ball = Ball([player, computer])
