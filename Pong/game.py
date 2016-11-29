@@ -1,5 +1,6 @@
 import pygame
 import random
+import runpy
 pygame.font.init()
 
 class MenuItem(pygame.font.Font):
@@ -85,7 +86,7 @@ class GameMenu():
                 self.screen.blit(item.label, item.position)
  
             pygame.display.flip()
- 
+
  
 if __name__ == "__main__":
     # Creating the screen
@@ -95,7 +96,7 @@ if __name__ == "__main__":
     def hard():
         print("HARD")
     def easy():
-        print("EASY")
+        file_globals = runpy.run_path("pong_easy.py")
     funcs = {'EASY': easy, 'HARD': hard}
     pygame.display.set_caption('Game Menu')
     gm = GameMenu(screen, menu_items)

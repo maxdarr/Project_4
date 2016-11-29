@@ -4,7 +4,7 @@ import random
 import math
 pygame.font.init()
 
-
+# a class created for each menu item on the menu
 class MenuItem(pygame.font.Font):
     def __init__(self, text, font=None, font_size=30,
                  font_color=(255, 255, 255), pos_x=0, pos_y=0):
@@ -50,7 +50,7 @@ class GameMenu():
  
         self.items = []
         for index, item in enumerate(items):
-            menu_item = MenuItem(item)#, '/home/nebelhom/.fonts/SHOWG.TTF')
+            menu_item = MenuItem(item)
  
             # t_h: total height of text block
             t_h = len(items) * menu_item.height
@@ -98,7 +98,9 @@ if __name__ == "__main__":
     def hard():
         print("HARD")
     def easy():
-        print("EASY")
+        with open("somefile.py") as f:
+            code = compile(f.read(), "somefile.py", 'exec')
+            exec(code, global_vars, local_vars)
     funcs = {'EASY': easy, 'HARD': hard}
     pygame.display.set_caption('Game Menu')
     gm = GameMenu(screen, menu_items)
