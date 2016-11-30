@@ -94,7 +94,7 @@ if __name__ == "__main__":
  
     menu_items = ('EASY', 'HARD')
     def hard():
-        print("HARD")
+        file_globals1 = runpy.run_path("pong_hard.py")
     def easy():
         file_globals = runpy.run_path("pong_easy.py")
     funcs = {'EASY': easy, 'HARD': hard}
