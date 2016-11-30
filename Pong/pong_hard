@@ -1,26 +1,25 @@
 #!/usr/bin/env python
-#EASY VERSION 
+#HARD VERSION - ONLY COMMENTED WHAT IS DIFFERENT FROM THE EASY VERSION
 import pygame
 import random
 
 class Paddle(pygame.sprite.Sprite):
     def __init__(self, xpos, ai=False):
-        pygame.sprite.Sprite.__init__(self) #calling the base class for visible game objects
-        self.xpos = xpos #sets the paddles position on the x axis
+        pygame.sprite.Sprite.__init__(self) 
+        self.xpos = xpos 
         self.ai = ai
-        self.image =  pygame.Surface((10, 70)) #creates the paddle image
-        self.rect = self.image.get_rect() #turns the image into a pygame rect object
-        self.rect.topright = (xpos, 215) #starting point for your paddle
-        self.image.fill(pygame.Color("white")) #fill the rectangle with White
+        self.image =  pygame.Surface((10, 70)) 
+        self.rect = self.image.get_rect() 
+        self.rect.topright = (xpos, 215) 
+        self.image.fill(pygame.Color("white")) 
 
     def update(self):
 
-        if not self.ai: #if this is your paddle
-            pos = pygame.mouse.get_pos() #gets the position of your mouse
-            self.rect.topright = (self.xpos, pos[1]) #makes the paddles position whatever your mouses position
-            #is on the y axis, the x axis stays the same
-        else: #if this is the computers paddle
-            global ai_speed #calls the global variable for the ai's speed
+        if not self.ai: 
+            pos = pygame.mouse.get_pos() 
+            self.rect.topright = (self.xpos, pos[1]) 
+        else: 
+            global ai_speed 
             if self.rect.center[1]-20 < ball.rect.center[1]: #if the paddle's y coordinate minus 20 is less than
             #the the ball's y coordinate
                 dy = ai_speed + random.random()*ai_speed #the paddle will move up in line with the ball
