@@ -16,6 +16,9 @@ class Paddle(pygame.sprite.Sprite):
     def update(self):
 
         if not self.ai: 
+            self.image = pygame.Surface((10,45))
+            self.rect = self.image.get_rect()
+            self.image.fill(pygame.Color("white"))
             pos = pygame.mouse.get_pos() 
             self.rect.topright = (self.xpos, pos[1]) 
         else: 
@@ -32,7 +35,7 @@ class Paddle(pygame.sprite.Sprite):
 class Ball(pygame.sprite.Sprite):
     def __init__(self, paddles):
         pygame.sprite.Sprite.__init__(self) 
-        global ball_speed 
+        global ball_speed, bounce_sound
         self.speed = ball_speed
         self.paddles = paddles
         self.pos_d = (random.choice([-1,1]), random.choice([-1,1]))
@@ -49,21 +52,27 @@ class Ball(pygame.sprite.Sprite):
     def update(self):
         new_dx = self.pos_d[0] 
         new_dy = self.pos_d[1] 
-        if self.rect.topright[1] >= 480: 
+        if self.rect.topright[1] >= 480:
+            bounce_sound.play() 
             new_dy = -new_dy
         elif self.rect.topright[1] <= 0: 
+            bounce_sound.play()
             new_dy = -new_dy
         elif self.rect.topright[0] <= 0: 
+            edge_hit.play()
             ai_score()
             new_round()
         elif self.rect.topright[0] >= 640: 
+            edge_hit.play()
             player_score()
             new_round()
         
         for paddle in self.paddles: 
             if self.collision(paddle.rect):
+                bounce_sound.play()
                 new_dx = -new_dx
                 new_dy = self.get_new_dy(paddle)
+                self.speed += 1
                 break
 
         self.pos_d = (new_dx, new_dy) 
@@ -71,6 +80,12 @@ class Ball(pygame.sprite.Sprite):
         
     def collision(self, target):
         return self.rect.colliderect(target) 
+
+class speed_block(pygame.sprite.Sprite):
+    def __init__(self):
+        global ball_speed
+        self.image = pygame.Surface((20,20))
+        self.rect = self.image.get_rect()
 
 
 def update_caption():
@@ -111,7 +126,7 @@ def new_round():
     player = Paddle(10)
     computer = Paddle(630, True)
     ball = Ball([player, computer])
-    #ai_speed += 0.5
+    ai_speed += 0.5
     allsprites = pygame.sprite.RenderPlain((player, computer, ball))
   
 
@@ -119,8 +134,11 @@ def new_round():
 
 pygame.init() 
 
+bounce_sound = pygame.mixer.Sound('impact.wav')
+edge_hit = pygame.mixer.Sound('edge_hit.wav')
+
 ball_speed = 5 
-ai_speed = 2 
+ai_speed = 6 #moved up from 2
 player = Paddle(10)
 computer = Paddle(630, True)
 ball = Ball([player, computer])
@@ -142,7 +160,7 @@ pygame.mouse.set_visible(False)
 clock = pygame.time.Clock() 
 
 while 1:
-    clock.tick(30) 
+    clock.tick(50) 
     pygame.event.pump() 
     allsprites.update() 
     screen.blit(background,(0,0)) 

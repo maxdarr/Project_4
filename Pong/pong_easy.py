@@ -36,7 +36,7 @@ class Paddle(pygame.sprite.Sprite):
 class Ball(pygame.sprite.Sprite):
     def __init__(self, paddles):
         pygame.sprite.Sprite.__init__(self) #calling the base class for visible game objects
-        global ball_speed #calls the global ball_speed variable
+        global ball_speed, bounce_sound #calls the global ball_speed variable and the bounce sound
         self.speed = ball_speed
         self.paddles = paddles
         self.pos_d = (random.choice([-1,1]), random.choice([-1,1]))
@@ -54,9 +54,11 @@ class Ball(pygame.sprite.Sprite):
     def update(self):
         new_dx = self.pos_d[0] #the new_dx is equal to 1 or -1 randomly at first and then whatever it is updated to
         new_dy = self.pos_d[1] #the new_dy is equal to 1 or -1 randomly at first and then whatever it is updated to
-        if self.rect.topright[1] >= 480: #if it hits the top of the screen aim it back down
+        if self.rect.topright[1] >= 480: #if it hits the top of the screen aim it back down,bounce noise goes
+            bounce_sound.play()
             new_dy = -new_dy
-        elif self.rect.topright[1] <= 0: #if it hits the bottom of the screen aim it back up
+        elif self.rect.topright[1] <= 0: #if it hits the bottom of the screen aim it back up,bounce noise goes
+            bounce_sound.play()
             new_dy = -new_dy
         elif self.rect.topright[0] <= 0: #if it hits the left side of the of the screen then the computer's 
         #score is increased the label is updated and it is checked if they won and then a new round is started 
@@ -70,6 +72,7 @@ class Ball(pygame.sprite.Sprite):
         #get_new_dy to get the new direction in the y direction
         for paddle in self.paddles: 
             if self.collision(paddle.rect):
+                bounce_sound.play() #makes the bounce noise
                 new_dx = -new_dx
                 new_dy = self.get_new_dy(paddle)
                 break
@@ -128,6 +131,8 @@ def new_round():
 
 
 pygame.init() #initialize all imported pygame modules
+
+bounce_sound = pygame.mixer.Sound('impact.wav')
 
 ball_speed = 5 #5
 ai_speed = 2 #4
