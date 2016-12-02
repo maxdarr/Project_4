@@ -2,6 +2,8 @@
 #HARD VERSION - ONLY COMMENTED WHAT IS DIFFERENT FROM THE EASY VERSION
 import pygame
 import random
+import sys
+pygame.font.init()
 
 class Paddle(pygame.sprite.Sprite):
     def __init__(self, xpos, ai=False):
@@ -86,6 +88,10 @@ class speed_block(pygame.sprite.Sprite):
         global ball_speed
         self.image = pygame.Surface((20,20))
         self.rect = self.image.get_rect()
+        self.xpos = 320
+        self.ypos = random.randint(40,440)
+        self.rect.center = (self.xpos, self.ypos)
+
 
 
 def update_caption():
@@ -96,17 +102,19 @@ def update_caption():
 def check_win():
     global player_wins, ai_wins, ai_speed
     if player_wins == 5:
-        pygame.display.set_caption("Player wins!")
+        pygame.display.set_caption("You win!")
         player_wins = 0
         ai_wins = 0
         ai_speed = 3
-        new_round()
+        #new_round()
     elif ai_wins == 5:
         pygame.display.set_caption("Computer wins!")
         player_wins = 0
         ai_wins = 0
         ai_speed = 3
-        new_round()
+        #new_round()myfont = pygame.font.SysFont("monospace", 50)
+            #label = myfont.render("GAME OVER", 1, (255,255,0))
+            #screen.blit(label, (300, 300))
 
 
 def player_score():
