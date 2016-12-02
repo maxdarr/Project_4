@@ -45,6 +45,7 @@ class Ball(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = (320, 240)
         self.image.fill(pygame.Color("yellow"))
+        self.coll_counter = 0
         
 
     def get_new_dy(self, paddle):
@@ -75,6 +76,7 @@ class Ball(pygame.sprite.Sprite):
                 new_dx = -new_dx
                 new_dy = self.get_new_dy(paddle)
                 self.speed += 1
+                #speed_block.create_block()
                 break
 
         self.pos_d = (new_dx, new_dy) 
@@ -85,12 +87,39 @@ class Ball(pygame.sprite.Sprite):
 
 class speed_block(pygame.sprite.Sprite):
     def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
         global ball_speed
         self.image = pygame.Surface((20,20))
         self.rect = self.image.get_rect()
         self.xpos = 320
-        self.ypos = random.randint(40,440)
+        self.ypos = random.randint(120,220)
         self.rect.center = (self.xpos, self.ypos)
+        self.image.fill(pygame.Color("red"))
+
+
+    def update(self):
+        global ball_speed
+        if self.collision(ball.rect):
+            speed_sound.play()
+            ball.speed += 15
+            
+
+    def collision(self, target):
+        return self.rect.colliderect(target)
+
+
+class speed_block2(speed_block):
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        global ball_speed
+        self.image = pygame.Surface((20,20))
+        self.rect = self.image.get_rect()
+        self.xpos = 320
+        self.ypos = random.randint(260,360)
+        self.rect.center = (self.xpos, self.ypos)
+        self.image.fill(pygame.Color("red"))
+
+
 
 
 
@@ -106,16 +135,13 @@ def check_win():
         player_wins = 0
         ai_wins = 0
         ai_speed = 3
-        #new_round()
+        new_round()
     elif ai_wins == 5:
         pygame.display.set_caption("Computer wins!")
         player_wins = 0
         ai_wins = 0
         ai_speed = 3
-        #new_round()myfont = pygame.font.SysFont("monospace", 50)
-            #label = myfont.render("GAME OVER", 1, (255,255,0))
-            #screen.blit(label, (300, 300))
-
+        new_round()
 
 def player_score():
     global player_wins
@@ -130,31 +156,36 @@ def ai_score():
     check_win()
 
 def new_round():
-    global player, computer, ball, allsprites, ai_speed
+    global player, computer, ball, allsprites, ai_speed, speed_block1, speed_block_2, ball_speed
     player = Paddle(10)
     computer = Paddle(630, True)
     ball = Ball([player, computer])
     ai_speed += 0.5
-    allsprites = pygame.sprite.RenderPlain((player, computer, ball))
+    speed_block1 = speed_block()
+    speed_block_2 = speed_block2()
+    ball_speed = 5
+    allsprites = pygame.sprite.RenderPlain((player, computer, ball, speed_block1, speed_block_2))
   
-
 
 
 pygame.init() 
 
 bounce_sound = pygame.mixer.Sound('impact.wav')
 edge_hit = pygame.mixer.Sound('edge_hit.wav')
+speed_sound = pygame.mixer.Sound('Speed.wav')
 
 ball_speed = 5 
 ai_speed = 6 #moved up from 2
 player = Paddle(10)
 computer = Paddle(630, True)
 ball = Ball([player, computer])
+speed_block1 = speed_block()
+speed_block_2 = speed_block2()
 
 player_wins = 0
 ai_wins = 0
 
-allsprites = pygame.sprite.RenderPlain((player, computer, ball)) 
+allsprites = pygame.sprite.RenderPlain((player, computer, ball, speed_block1, speed_block_2)) 
 screen = pygame.display.set_mode((640,480)) 
 
 background = pygame.Surface(screen.get_size())
@@ -170,7 +201,8 @@ clock = pygame.time.Clock()
 while 1:
     clock.tick(50) 
     pygame.event.pump() 
-    allsprites.update() 
+    allsprites.update()
+    #speed_block.update() 
     screen.blit(background,(0,0)) 
     allsprites.draw(screen) 
     pygame.display.flip() 

@@ -62,10 +62,12 @@ class Ball(pygame.sprite.Sprite):
             new_dy = -new_dy
         elif self.rect.topright[0] <= 0: #if it hits the left side of the of the screen then the computer's 
         #score is increased the label is updated and it is checked if they won and then a new round is started 
+            edge_hit.play()
             ai_score()
             new_round()
         elif self.rect.topright[0] >= 640: #if it hits the right side of the of the screen then the player's 
         #score is increased the label is updated and it is checked if they won and then a new round is started 
+            edge_hit.play()
             player_score()
             new_round()
         #if the paddle collides with the paddle then the ball is aimed back the other x direction and runs
@@ -132,7 +134,8 @@ def new_round():
 
 pygame.init() #initialize all imported pygame modules
 
-bounce_sound = pygame.mixer.Sound('impact.wav')
+bounce_sound = pygame.mixer.Sound('impact.wav') #noise when it hits top bottom or paddle
+edge_hit = pygame.mixer.Sound('edge_hit.wav') #noise when it hits the sides
 
 ball_speed = 5 #5
 ai_speed = 2 #4
