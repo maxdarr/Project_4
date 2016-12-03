@@ -3,7 +3,8 @@ import random
 import runpy
 pygame.font.init()
 #references - http://stackoverflow.com/questions/436198/what-is-an-alternative-to-execfile-in-python-3-0
-
+# https://nebelprog.wordpress.com/2013/09/02/create-a-simple-game-menu-with-pygame-pt-4-connecting-it-to-functions/
+# creates the menu and you can choose to play the easy or hard version of the game
 class MenuItem(pygame.font.Font):
     def __init__(self, text, font=None, font_size=30,
                  font_color=(255, 255, 255), pos_x=0, pos_y=0):

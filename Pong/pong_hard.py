@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 #HARD VERSION - ONLY COMMENTED WHAT IS DIFFERENT FROM THE EASY VERSION
+#the differences are that the paddle is smaller the ai moves faster, the ball moves faster after
+#it is hit and there are speed blocks
+#that appear in random places that speed the ball up a lot when the ball hits it
 import pygame
 import random
 import sys
@@ -18,7 +21,7 @@ class Paddle(pygame.sprite.Sprite):
     def update(self):
 
         if not self.ai: 
-            self.image = pygame.Surface((10,45))
+            self.image = pygame.Surface((10,45)) #makes the paddle size smaller
             self.rect = self.image.get_rect()
             self.image.fill(pygame.Color("white"))
             pos = pygame.mouse.get_pos() 
@@ -84,6 +87,10 @@ class Ball(pygame.sprite.Sprite):
         
     def collision(self, target):
         return self.rect.colliderect(target) 
+
+
+#creates the speed block classed, they randomly appear in certain spots on the screen and when the ball
+#hits it the ball is sped up a lot to make this version harder
 
 class speed_block(pygame.sprite.Sprite):
     def __init__(self):
